@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta charset="utf-8"/>
-<meta content="PointWorld: Scaling 3D world models for in-the-wild robotic manipulation. An anonymized project page for ICLR 2026 submission #16437." name="description"/>
+<meta content="PointWorld: Scaling 3D world models for in-the-wild robotic manipulation." name="description"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <title>PointWorld | Scaling 3D World Models for In-The-Wild Robotic Manipulation</title>
 <meta content="media/thumbnail.jpg" property="og:image"/>
@@ -34,10 +34,27 @@
 <div class="columns is-centered">
 <div class="column is-10 has-text-centered">
 <h1 class="title is-1 publication-title">PointWorld: Scaling 3D World Models<br/>for In-The-Wild Robotic Manipulation</h1>
-<div class="affiliation-note">
-            ICLR 2026 Submission #16437
+<div class="is-size-5 publication-authors">
+<span class="author-block">Wenlong Huang<sup>1,†</sup>,</span>
+<span class="author-block">Yu-Wei Chao<sup>2</sup>,</span>
+<span class="author-block">Arsalan Mousavian<sup>2</sup>,</span>
+<span class="author-block">Ming-Yu Liu<sup>2</sup>,</span>
+<span class="author-block">Dieter Fox<sup>2</sup>,</span>
+<span class="author-block">Kaichun Mo<sup>2,*</sup>,</span>
+<span class="author-block">Li Fei-Fei<sup>1,*</sup></span>
+</div>
+<div class="is-size-5 affiliation">
+<sup>1</sup>Stanford University,
+            <sup>2</sup>NVIDIA
           </div>
+<div class="affiliation-note">
+<sup>*</sup> Equal advising &nbsp;|&nbsp; <sup>†</sup> Work done partly at NVIDIA
+</div>
 <div class="button-container">
+<a class="button" href="#" title="PDF coming soon"><i class="fa-light fa-file"></i> PDF</a>
+<a class="button" href="#" title="arXiv coming soon"><i class="ai ai-arxiv"></i> arXiv</a>
+<a class="button" href="#" title="tl;dr coming soon"><i class="fa-light fa-bolt"></i> tl;dr</a>
+<a class="button" href="#" title="Code coming soon"><i class="fa-light fa-code"></i> Code</a>
 <a class="button" href="#abstract"><i class="fa-light fa-file-lines"></i> Abstract</a>
 <a class="button" href="#interactive-results"><i class="fa-light fa-cubes"></i> Interactive</a>
 <a class="button" href="#dataset"><i class="fa-light fa-database"></i> Dataset</a>
@@ -65,15 +82,28 @@
 <h2 class="title is-3 has-text-centered">Abstract</h2>
 <div class="content has-text-justified">
 <p>
-            Humans anticipate, from a glance and a contemplated action of their bodies, how the 3D world will respond. 
-            This predictive ability is equally vital for enabling robots to manipulate and interact with the physical world. 
-            We introduce <em>PointWorld</em>, a foundation 3D world model that unifies state and action in a shared spatial domain and predicts 3D point flow over short horizons: given one or a few RGB-D images and a sequence of robot actions, PointWorld forecasts per-point scene displacements that responds to the actions. 
-            To train our 3D world model, we curate a large-scale dataset for 3D dynamics learning spanning real and simulated robotic manipulation in diverse open-world environments—enabled by recent advances in 3D vision and diverse simulated environments—totaling about 2M trajectories and 500 hours. 
-            Through rigorous, large-scale empirical studies of backbones, action representations, learning objectives, data mixtures, domain transfers, and scaling, we distill design principles for large-scale 3D world modeling. 
-            PointWorld enables zero-shot simulation from in-the-wild RGB-D captures. 
-            It also powers model-based planning and control on real hardware that generalizes across diverse objects, and environments, all without task-specific demonstrations or training. 
+            Humans anticipate, from a glance and a contemplated action of their bodies, how the 3D world will respond, a capability that is equally vital for robotic manipulation.
+            We introduce <em>PointWorld</em>, a large pre-trained 3D world model that unifies state and action in a shared 3D space as 3D point flows: given one or few RGB-D images and a sequence of low-level robot action commands, PointWorld forecasts per-pixel displacements in 3D that respond to the given actions.
+            By representing actions as 3D point flows instead of embodiment-specific action spaces (e.g., joint positions), this formulation directly conditions on physical geometries of robots while seamlessly integrating learning across embodiments.
+            To train our 3D world model, we curate a large-scale dataset spanning real and simulated robotic manipulation in open-world environments, enabled by recent advances in 3D vision and simulated environments, totaling about 2M trajectories and 500 hours across a single-arm Franka and a bimanual humanoid.
+            Through rigorous, large-scale empirical studies of backbones, action representations, learning objectives, partial observability, data mixtures, domain transfers, and scaling, we distill design principles for large-scale 3D world modeling.
+            With a real-time (0.1s) inference speed, PointWorld can be efficiently integrated in the model-predictive control (MPC) framework for manipulation.
+            We demonstrate that a single pre-trained checkpoint enables a real-world Franka robot to perform rigid-body pushing, deformable and articulated object manipulation, and tool use, without requiring any demonstrations or post-training and all from a single image captured in-the-wild. 
           </p>
 </div>
+</div>
+</div>
+</div>
+</section>
+<section class="section" id="walkthrough">
+<div class="container is-max-widescreen">
+<h2 class="title is-3 has-text-centered">Walkthrough Video</h2>
+<div class="columns is-centered">
+<div class="column is-three-quarters has-text-centered">
+<video controls="" preload="metadata" width="100%">
+<source src="media/walkthrough-video.mp4" type="video/mp4"/>
+Your browser does not support the video tag.
+</video>
 </div>
 </div>
 </div>
