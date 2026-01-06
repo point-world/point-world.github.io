@@ -14,7 +14,9 @@ window.addEventListener('DOMContentLoaded', function () {
   var videos = document.querySelectorAll('video');
   videos.forEach(function (video) {
     video.addEventListener('loadedmetadata', function () {
-      video.playbackRate = 2.0;
+      if (video.classList.contains('experiment-video')) {
+        video.playbackRate = 2.0;
+      }
       var playPromise = video.play();
       if (playPromise && playPromise.catch) {
         playPromise.catch(function () {});
