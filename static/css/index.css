@@ -44,7 +44,8 @@ body {
   max-width: 100%;
 }
 
-.teaser-section .teaser-image img {
+.teaser-section .teaser-image img,
+.teaser-section .teaser-image video {
   display: block;
   width: 100%;
   height: auto;
