@@ -11,6 +11,29 @@ window.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+  var VISER_PLACEHOLDER_TEXT = 'choose a scene above to view interactive visualization';
+  var VISER_READY_TEXT = 'Click and move me';
+
+  function getViewerBanner(viewer) {
+    if (!viewer || !viewer.parentElement) {
+      return null;
+    }
+    return viewer.parentElement.querySelector('.viser-banner');
+  }
+
+  function setViewerBanner(banner, isPlaceholder) {
+    if (!banner) {
+      return;
+    }
+    if (isPlaceholder) {
+      banner.textContent = VISER_PLACEHOLDER_TEXT;
+      banner.classList.add('is-placeholder');
+      return;
+    }
+    banner.textContent = VISER_READY_TEXT;
+    banner.classList.remove('is-placeholder');
+  }
+
   var videos = document.querySelectorAll('video');
   videos.forEach(function (video) {
     video.addEventListener('loadedmetadata', function () {
@@ -58,6 +81,10 @@ window.addEventListener('DOMContentLoaded', function () {
     var gtFrame = document.getElementById('interactive-gt');
     if (predFrame) { predFrame.removeAttribute('src'); predFrame.dataset.base = ''; }
     if (gtFrame) { gtFrame.removeAttribute('src'); gtFrame.dataset.base = ''; }
+    var predBanner = getViewerBanner(predFrame);
+    var gtBanner = getViewerBanner(gtFrame);
+    setViewerBanner(predBanner, true);
+    setViewerBanner(gtBanner, true);
 
     function getInteractiveCamera(button, target) {
       if (!button) {
@@ -167,7 +194,7 @@ window.addEventListener('DOMContentLoaded', function () {
         if (imageMap.depth2) set('depth2', 'cameras-depth/cam2.png', 'depth cam2');
       }
 
-      var activeIdx = 0;
+      var activeIdx = -1;
       function activate(idx) {
         if (idx < 0 || idx >= thumbs.length) return;
         activeIdx = idx;
@@ -181,6 +208,8 @@ window.addEventListener('DOMContentLoaded', function () {
         updateImages(base, label);
         if (predFrame && predFrame.dataset.base !== base) { predFrame.src = buildViewerSrc(base, 'scene-pred.viser', cameraPred); predFrame.dataset.base = base; }
         if (gtFrame && gtFrame.dataset.base !== base) { gtFrame.src = buildViewerSrc(base, 'scene-gt.viser', cameraGt); gtFrame.dataset.base = base; }
+        setViewerBanner(predBanner, false);
+        setViewerBanner(gtBanner, false);
       }
 
       // Bind thumb clicks
@@ -190,7 +219,7 @@ window.addEventListener('DOMContentLoaded', function () {
         arrow.addEventListener('click', function (event) {
           event.preventDefault();
           var direction = arrow.getAttribute('data-direction') === 'prev' ? -1 : 1;
-          var next = (activeIdx + direction + thumbs.length) % thumbs.length;
+          var next = activeIdx < 0 ? (direction === -1 ? thumbs.length - 1 : 0) : (activeIdx + direction + thumbs.length) % thumbs.length;
           activate(next);
           if (thumbs[next]) {
             thumbs[next].focus();
@@ -220,7 +249,7 @@ window.addEventListener('DOMContentLoaded', function () {
       dotsSelector: '#interactive-dots-droid',
       inputsCardId: 'interactive-inputs-droid',
       imageRoles: ['rgb0','depth0','rgb1','depth1'],
-      autoActivate: true
+      autoActivate: false
     });
     var b1kApi = initOneCarousel({
       container: document.getElementById('interactive-row-b1k'),
@@ -294,6 +323,7 @@ window.addEventListener('DOMContentLoaded', function () {
       return;
     }
 
+    var activeIdx = -1; // no default sample selected
     var thumbRow = section.querySelector('#dataset-thumb-row');
     var dotsContainer = section.querySelector('#dataset-dots');
     var datasetDots = [];
@@ -311,9 +341,12 @@ window.addEventListener('DOMContentLoaded', function () {
         return dot;
       });
     }
-    var activeIdx = 0; // default to the first visible sample
     var oursViewer = document.getElementById('dataset-viewer-ours');
     var originalViewer = document.getElementById('dataset-viewer-original');
+    var oursBanner = getViewerBanner(oursViewer);
+    var originalBanner = getViewerBanner(originalViewer);
+    setViewerBanner(oursBanner, true);
+    setViewerBanner(originalBanner, true);
     var imageMap = {
       'ours-rgb-0': section.querySelector('[data-dataset-role="ours-rgb-0"]'),
       'ours-depth-0': section.querySelector('[data-dataset-role="ours-depth-0"]'),
@@ -525,6 +558,8 @@ window.addEventListener('DOMContentLoaded', function () {
         originalViewer.src = buildViewerSrc(base, 'scene-raw-tri.viser', camera);
         originalViewer.dataset.base = base;
       }
+      setViewerBanner(oursBanner, false);
+      setViewerBanner(originalBanner, false);
     }
 
     datasetThumbs.forEach(function (btn, idx) {
@@ -537,7 +572,7 @@ window.addEventListener('DOMContentLoaded', function () {
       arrow.addEventListener('click', function (event) {
         event.preventDefault();
         var direction = arrow.getAttribute('data-direction') === 'prev' ? -1 : 1;
-        var next = (activeIdx + direction + datasetThumbs.length) % datasetThumbs.length;
+        var next = activeIdx < 0 ? (direction === -1 ? datasetThumbs.length - 1 : 0) : (activeIdx + direction + datasetThumbs.length) % datasetThumbs.length;
         activateDatasetSample(next);
         if (datasetThumbs[next]) {
           datasetThumbs[next].focus();
@@ -561,7 +596,6 @@ window.addEventListener('DOMContentLoaded', function () {
       originalViewer.removeAttribute('src');
       originalViewer.dataset.base = '';
     }
-    activateDatasetSample(activeIdx);
 
     // Initialize synchronized magnifiers for calibrated inputs
     if (magnifier) {
