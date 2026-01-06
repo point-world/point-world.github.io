@@ -11,8 +11,8 @@ window.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  var VISER_PLACEHOLDER_TEXT = 'choose a scene above to view interactive visualization';
-  var VISER_READY_TEXT = 'Click and move me';
+	  var VISER_PLACEHOLDER_TEXT = 'Choose a scene above';
+	  var VISER_READY_TEXT = 'Click and move me';
 
 	  function getViewerBanner(viewer) {
 	    if (!viewer || !viewer.parentElement) {
