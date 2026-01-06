@@ -12,8 +12,19 @@
     -->
     <link rel="manifest" href="./manifest.json" />
     <title>Viser</title>
+    <script>
+      (function () {
+        try {
+          var params = new URLSearchParams(window.location.search);
+          if (params.get('playbackPath')) {
+            document.documentElement.classList.add('pw-viser-playback');
+          }
+        } catch (e) {}
+      })();
+    </script>
     <script type="module" crossorigin src="./assets/index-Dj04Ot0z.js"></script>
     <link rel="stylesheet" crossorigin href="./assets/index-BjF_oY-i.css">
+    <link rel="stylesheet" href="./pointworld-overrides.css">
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

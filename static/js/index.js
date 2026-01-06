@@ -14,25 +14,46 @@ window.addEventListener('DOMContentLoaded', function () {
   var VISER_PLACEHOLDER_TEXT = 'choose a scene above to view interactive visualization';
   var VISER_READY_TEXT = 'Click and move me';
 
-  function getViewerBanner(viewer) {
-    if (!viewer || !viewer.parentElement) {
-      return null;
-    }
-    return viewer.parentElement.querySelector('.viser-banner');
-  }
+	  function getViewerBanner(viewer) {
+	    if (!viewer || !viewer.parentElement) {
+	      return null;
+	    }
+	    return viewer.parentElement.querySelector('.viser-banner');
+	  }
 
-  function setViewerBanner(banner, isPlaceholder) {
-    if (!banner) {
-      return;
-    }
-    if (isPlaceholder) {
-      banner.textContent = VISER_PLACEHOLDER_TEXT;
-      banner.classList.add('is-placeholder');
-      return;
-    }
-    banner.textContent = VISER_READY_TEXT;
-    banner.classList.remove('is-placeholder');
-  }
+	  function getViewerHint(viewer) {
+	    if (!viewer) {
+	      return null;
+	    }
+	    var container = viewer.closest('.interactive-card--viewer, .dataset-block--viewer');
+	    if (!container) {
+	      return null;
+	    }
+	    return container.querySelector('[data-viser-hint]');
+	  }
+
+	  function setViewerHintVisible(viewer, visible) {
+	    var hint = getViewerHint(viewer);
+	    if (!hint) {
+	      return;
+	    }
+	    hint.classList.toggle('is-hidden', !visible);
+	  }
+
+	  function setViewerBanner(banner, isPlaceholder) {
+	    if (!banner) {
+	      return;
+	    }
+	    if (isPlaceholder) {
+	      banner.textContent = VISER_PLACEHOLDER_TEXT;
+	      banner.classList.add('is-placeholder');
+	      banner.classList.remove('is-hidden');
+	      return;
+	    }
+	    banner.textContent = VISER_READY_TEXT;
+	    banner.classList.remove('is-placeholder');
+	    banner.classList.add('is-hidden');
+	  }
 
   var videos = document.querySelectorAll('video');
   videos.forEach(function (video) {
@@ -81,10 +102,12 @@ window.addEventListener('DOMContentLoaded', function () {
     var gtFrame = document.getElementById('interactive-gt');
     if (predFrame) { predFrame.removeAttribute('src'); predFrame.dataset.base = ''; }
     if (gtFrame) { gtFrame.removeAttribute('src'); gtFrame.dataset.base = ''; }
-    var predBanner = getViewerBanner(predFrame);
-    var gtBanner = getViewerBanner(gtFrame);
-    setViewerBanner(predBanner, true);
-    setViewerBanner(gtBanner, true);
+	    var predBanner = getViewerBanner(predFrame);
+	    var gtBanner = getViewerBanner(gtFrame);
+	    setViewerBanner(predBanner, true);
+	    setViewerBanner(gtBanner, true);
+	    setViewerHintVisible(predFrame, false);
+	    setViewerHintVisible(gtFrame, false);
 
     function getInteractiveCamera(button, target) {
       if (!button) {
@@ -206,11 +229,13 @@ window.addEventListener('DOMContentLoaded', function () {
         if (!base) return;
         if (interactiveMagnifier && interactiveMagnifier.hideAll) interactiveMagnifier.hideAll();
         updateImages(base, label);
-        if (predFrame && predFrame.dataset.base !== base) { predFrame.src = buildViewerSrc(base, 'scene-pred.viser', cameraPred); predFrame.dataset.base = base; }
-        if (gtFrame && gtFrame.dataset.base !== base) { gtFrame.src = buildViewerSrc(base, 'scene-gt.viser', cameraGt); gtFrame.dataset.base = base; }
-        setViewerBanner(predBanner, false);
-        setViewerBanner(gtBanner, false);
-      }
+	        if (predFrame && predFrame.dataset.base !== base) { predFrame.src = buildViewerSrc(base, 'scene-pred.viser', cameraPred); predFrame.dataset.base = base; }
+	        if (gtFrame && gtFrame.dataset.base !== base) { gtFrame.src = buildViewerSrc(base, 'scene-gt.viser', cameraGt); gtFrame.dataset.base = base; }
+	        setViewerBanner(predBanner, false);
+	        setViewerBanner(gtBanner, false);
+	        setViewerHintVisible(predFrame, true);
+	        setViewerHintVisible(gtFrame, true);
+	      }
 
       // Bind thumb clicks
       thumbs.forEach(function (btn, idx) { btn.addEventListener('click', function () { activate(idx); }); });
@@ -341,12 +366,14 @@ window.addEventListener('DOMContentLoaded', function () {
         return dot;
       });
     }
-    var oursViewer = document.getElementById('dataset-viewer-ours');
-    var originalViewer = document.getElementById('dataset-viewer-original');
-    var oursBanner = getViewerBanner(oursViewer);
-    var originalBanner = getViewerBanner(originalViewer);
-    setViewerBanner(oursBanner, true);
-    setViewerBanner(originalBanner, true);
+	    var oursViewer = document.getElementById('dataset-viewer-ours');
+	    var originalViewer = document.getElementById('dataset-viewer-original');
+	    var oursBanner = getViewerBanner(oursViewer);
+	    var originalBanner = getViewerBanner(originalViewer);
+	    setViewerBanner(oursBanner, true);
+	    setViewerBanner(originalBanner, true);
+	    setViewerHintVisible(oursViewer, false);
+	    setViewerHintVisible(originalViewer, false);
     var imageMap = {
       'ours-rgb-0': section.querySelector('[data-dataset-role="ours-rgb-0"]'),
       'ours-depth-0': section.querySelector('[data-dataset-role="ours-depth-0"]'),
@@ -558,9 +585,11 @@ window.addEventListener('DOMContentLoaded', function () {
         originalViewer.src = buildViewerSrc(base, 'scene-raw-tri.viser', camera);
         originalViewer.dataset.base = base;
       }
-      setViewerBanner(oursBanner, false);
-      setViewerBanner(originalBanner, false);
-    }
+	      setViewerBanner(oursBanner, false);
+	      setViewerBanner(originalBanner, false);
+	      setViewerHintVisible(oursViewer, true);
+	      setViewerHintVisible(originalViewer, true);
+	    }
 
     datasetThumbs.forEach(function (btn, idx) {
       btn.addEventListener('click', function () {

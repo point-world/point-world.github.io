@@ -923,6 +923,15 @@ section.hero:first-of-type .hero-body {
   padding-top: 0.4rem;
 }
 
+/* Place title and hint banner inline for viser viewers */
+.dataset-block--viewer h3.title,
+.interactive-card--viewer h3.title {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
 /* Place title and hint banner inline */
 .dataset-block--inputs h3.title {
   display: flex;
@@ -966,6 +975,15 @@ section.hero:first-of-type .hero-body {
 
 .hint-banner--zoom {
   font-size: 0.8rem;
+}
+
+.hint-banner--move {
+  font-size: 0.8rem;
+}
+
+.hint-banner--move::before {
+  content: '\21BB';
+  font-size: 1.15em;
 }
 
 /* Dataset magnifier lens */
