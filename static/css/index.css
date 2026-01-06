@@ -3,6 +3,10 @@ body {
   font-family: 'Google Sans', sans-serif;
 }
 
+:root {
+  --pw-viser-playback-dock-height: clamp(64px, 9vh, 96px);
+}
+
 .visually-hidden {
   position: absolute !important;
   width: 1px;
@@ -511,6 +515,10 @@ section.hero:first-of-type .hero-body {
   margin-top: 1.5rem;
 }
 
+.interactive-viewer.pw-viser-with-playback {
+  padding-top: calc(56.25% + var(--pw-viser-playback-dock-height));
+}
+
 .interactive-iframe {
   position: absolute;
   inset: 0;
@@ -908,6 +916,10 @@ section.hero:first-of-type .hero-body {
   box-shadow: 0 28px 48px rgba(12, 34, 67, 0.22);
   margin-top: 0.3rem;
   background: radial-gradient(circle at 20% 20%, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0));
+}
+
+.dataset-viewer.pw-viser-with-playback {
+  padding-top: calc(100% + var(--pw-viser-playback-dock-height));
 }
 
 .dataset-iframe {

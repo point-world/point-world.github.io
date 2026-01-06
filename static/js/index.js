@@ -40,6 +40,13 @@ window.addEventListener('DOMContentLoaded', function () {
 	    hint.classList.toggle('is-hidden', !visible);
 	  }
 
+	  function setViewerPlaybackDock(viewer, enabled) {
+	    if (!viewer || !viewer.parentElement) {
+	      return;
+	    }
+	    viewer.parentElement.classList.toggle('pw-viser-with-playback', !!enabled);
+	  }
+
 	  function setViewerBanner(banner, isPlaceholder) {
 	    if (!banner) {
 	      return;
@@ -83,15 +90,16 @@ window.addEventListener('DOMContentLoaded', function () {
     };
   }
 
-  function buildViewerSrc(base, filename, camera, fallback) {
-    var merged = mergeCamera(camera, fallback);
-    var rawPath = '../../' + base + '/' + filename;
-    var encoded = encodeURI(rawPath).replace(/\+/g, '%2B');
-    return 'static/viser-client/index.html?playbackPath=' + encoded +
-      '&initialCameraPosition=' + encodeURIComponent(merged.position) +
-      '&initialCameraLookAt=' + encodeURIComponent(merged.lookAt) +
-      '&initialCameraUp=' + encodeURIComponent(merged.up);
-  }
+	  function buildViewerSrc(base, filename, camera, fallback, dockPlayback) {
+	    var merged = mergeCamera(camera, fallback);
+	    var rawPath = '../../' + base + '/' + filename;
+	    var encoded = encodeURI(rawPath).replace(/\+/g, '%2B');
+	    return 'static/viser-client/index.html?playbackPath=' + encoded +
+	      '&initialCameraPosition=' + encodeURIComponent(merged.position) +
+	      '&initialCameraLookAt=' + encodeURIComponent(merged.lookAt) +
+	      '&initialCameraUp=' + encodeURIComponent(merged.up) +
+	      (dockPlayback ? '&pwDockPlayback=1' : '');
+	  }
 
   initInteractiveSection();
   initDatasetSection();
@@ -108,6 +116,8 @@ window.addEventListener('DOMContentLoaded', function () {
 	    setViewerBanner(gtBanner, true);
 	    setViewerHintVisible(predFrame, false);
 	    setViewerHintVisible(gtFrame, false);
+	    setViewerPlaybackDock(predFrame, false);
+	    setViewerPlaybackDock(gtFrame, false);
 
     function getInteractiveCamera(button, target) {
       if (!button) {
@@ -229,12 +239,14 @@ window.addEventListener('DOMContentLoaded', function () {
         if (!base) return;
         if (interactiveMagnifier && interactiveMagnifier.hideAll) interactiveMagnifier.hideAll();
         updateImages(base, label);
-	        if (predFrame && predFrame.dataset.base !== base) { predFrame.src = buildViewerSrc(base, 'scene-pred.viser', cameraPred); predFrame.dataset.base = base; }
-	        if (gtFrame && gtFrame.dataset.base !== base) { gtFrame.src = buildViewerSrc(base, 'scene-gt.viser', cameraGt); gtFrame.dataset.base = base; }
+	        if (predFrame && predFrame.dataset.base !== base) { predFrame.src = buildViewerSrc(base, 'scene-pred.viser', cameraPred, null, true); predFrame.dataset.base = base; }
+	        if (gtFrame && gtFrame.dataset.base !== base) { gtFrame.src = buildViewerSrc(base, 'scene-gt.viser', cameraGt, null, true); gtFrame.dataset.base = base; }
 	        setViewerBanner(predBanner, false);
 	        setViewerBanner(gtBanner, false);
 	        setViewerHintVisible(predFrame, true);
 	        setViewerHintVisible(gtFrame, true);
+	        setViewerPlaybackDock(predFrame, true);
+	        setViewerPlaybackDock(gtFrame, true);
 	      }
 
       // Bind thumb clicks
@@ -577,14 +589,14 @@ window.addEventListener('DOMContentLoaded', function () {
       updateDatasetImages(base, label);
       // hide magnifiers when switching samples
       if (magnifier && magnifier.hideAll) { magnifier.hideAll(); }
-      if (oursViewer && oursViewer.dataset.base !== base) {
-        oursViewer.src = buildViewerSrc(base, 'scene-fs-refined.viser', camera);
-        oursViewer.dataset.base = base;
-      }
-      if (originalViewer && originalViewer.dataset.base !== base) {
-        originalViewer.src = buildViewerSrc(base, 'scene-raw-tri.viser', camera);
-        originalViewer.dataset.base = base;
-      }
+	      if (oursViewer && oursViewer.dataset.base !== base) {
+	        oursViewer.src = buildViewerSrc(base, 'scene-fs-refined.viser', camera);
+	        oursViewer.dataset.base = base;
+	      }
+	      if (originalViewer && originalViewer.dataset.base !== base) {
+	        originalViewer.src = buildViewerSrc(base, 'scene-raw-tri.viser', camera);
+	        originalViewer.dataset.base = base;
+	      }
 	      setViewerBanner(oursBanner, false);
 	      setViewerBanner(originalBanner, false);
 	      setViewerHintVisible(oursViewer, true);
