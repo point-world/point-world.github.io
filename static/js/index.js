@@ -62,18 +62,38 @@ window.addEventListener('DOMContentLoaded', function () {
 	    banner.classList.add('is-hidden');
 	  }
 
-  var videos = document.querySelectorAll('video');
-  videos.forEach(function (video) {
-    video.addEventListener('loadedmetadata', function () {
-      if (video.classList.contains('experiment-video')) {
-        video.playbackRate = 2.0;
-      }
-      var playPromise = video.play();
-      if (playPromise && playPromise.catch) {
-        playPromise.catch(function () {});
-      }
-    });
-  });
+	  var videos = document.querySelectorAll('video');
+	  videos.forEach(function (video) {
+	    video.addEventListener('loadedmetadata', function () {
+	      if (video.classList.contains('experiment-video')) {
+	        video.playbackRate = 2.0;
+	      }
+	      var playPromise = video.play();
+	      if (playPromise && playPromise.catch) {
+	        playPromise.catch(function () {});
+	      }
+	    });
+	  });
+
+	  var experimentVideos = document.querySelectorAll('video.experiment-video');
+	  experimentVideos.forEach(function (video) {
+	    if (video.parentElement && video.parentElement.classList.contains('experiment-video-wrapper')) {
+	      return;
+	    }
+	    var parent = video.parentNode;
+	    if (!parent) {
+	      return;
+	    }
+	    var wrapper = document.createElement('div');
+	    wrapper.className = 'experiment-video-wrapper';
+	    parent.insertBefore(wrapper, video);
+	    wrapper.appendChild(video);
+
+	    var badge = document.createElement('div');
+	    badge.className = 'video-speed-badge';
+	    badge.textContent = '2×';
+	    wrapper.appendChild(badge);
+	  });
 
   var DEFAULT_CAMERA = {
     position: '1.00,0.00,1.00',
