@@ -6,8 +6,25 @@
 <meta content="PointWorld: Scaling 3D world models for in-the-wild robotic manipulation." name="description"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <title>PointWorld | Scaling 3D World Models for In-The-Wild Robotic Manipulation</title>
-<meta content="media/thumbnail.jpg" property="og:image"/>
-<link href="media/thumbnail.jpg" rel="icon" type="image/jpeg"/>
+<meta content="PointWorld: Scaling 3D World Models for In-The-Wild Robotic Manipulation" property="og:title"/>
+<meta content="PointWorld: Scaling 3D world models for in-the-wild robotic manipulation." property="og:description"/>
+<meta content="website" property="og:type"/>
+<meta content="media/preview-card-1080p.jpg" property="og:image"/>
+<meta content="1920" property="og:image:width"/>
+<meta content="1080" property="og:image:height"/>
+<meta content="image/jpeg" property="og:image:type"/>
+<meta content="PointWorld project preview card" property="og:image:alt"/>
+<meta content="media/preview-card-180p.jpg" property="og:image"/>
+<meta content="320" property="og:image:width"/>
+<meta content="180" property="og:image:height"/>
+<meta content="image/jpeg" property="og:image:type"/>
+<meta content="PointWorld project preview card" property="og:image:alt"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="PointWorld: Scaling 3D World Models for In-The-Wild Robotic Manipulation" name="twitter:title"/>
+<meta content="PointWorld: Scaling 3D world models for in-the-wild robotic manipulation." name="twitter:description"/>
+<meta content="media/preview-card-1080p.jpg" name="twitter:image"/>
+<meta content="PointWorld project preview card" name="twitter:image:alt"/>
+<link href="media/preview-card-180p.jpg" rel="icon" type="image/jpeg"/>
 <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet"/>
 <link href="./static/css/bulma.min.css" rel="stylesheet"/>
 <link href="./static/css/bulma-carousel.min.css" rel="stylesheet"/>
@@ -51,9 +68,9 @@
 <sup>*</sup> Equal advising &nbsp;|&nbsp; <sup>†</sup> Work done partly at NVIDIA
 </div>
 <div class="button-container">
-<a class="button" href="#" title="PDF coming soon"><i class="fa-light fa-file"></i>&nbsp;PDF</a>
-<a class="button" href="#" title="arXiv coming soon"><i class="ai ai-arxiv"></i>&nbsp;arXiv</a>
-<a class="button" href="media/walkthrough-video.mp4" target="_blank"><i class="fa-light fa-film"></i>&nbsp;Video</a>
+<a class="button" href="https://arxiv.org/pdf/2601.03782" rel="noopener" target="_blank"><i class="fa-light fa-file"></i>&nbsp;PDF</a>
+<a class="button" href="https://arxiv.org/abs/2601.03782" rel="noopener" target="_blank"><i class="ai ai-arxiv"></i>&nbsp;arXiv</a>
+<a class="button" href="https://youtu.be/fkaGkQ8d5Kg" rel="noopener" target="_blank"><i class="fa-light fa-film"></i>&nbsp;Video</a>
 <a class="button" href="#" title="tl;dr coming soon"><i class="fa-brands fa-x-twitter"></i>&nbsp;tl;dr</a>
 <a class="button" href="https://github.com/huangwl18/PointWorld" rel="noopener" target="_blank"><i class="fa-light fa-code"></i>&nbsp;Code</a>
 </div>
@@ -65,12 +82,12 @@
 <section class="section teaser-section">
 <div class="container is-max-widescreen">
 <figure class="image teaser-image">
-<video autoplay muted loop playsinline controls preload="metadata" aria-label="PointWorld teaser">
+<video autoplay muted loop playsinline controls preload="metadata" poster="media/preview-card-180p.jpg" aria-label="PointWorld teaser">
 <source src="media/teaser-720p.mp4" type="video/mp4"/>
 </video>
 </figure>
 <h2 class="subtitle has-text-centered teaser-caption" style="--teaser-caption-size: 1.0rem; --teaser-caption-line-height: 1.55;">
-      PointWorld predicts full-scene 3D point flow from partially observable RGB-D captures and robot actions (represented as 3D point flow). Trained on a large-scale dataset consisting of 500 hours interactions with high-quality custom 3D annotations, PointWorld enables zero-shot planning for in-the-wild manipulation tasks. We will release the code, data, and pre-trained checkpoints. 
+      PointWorld is a large pre-trained 3D world model that predicts full-scene 3D point flow from partially observable RGB-D captures and robot actions (represented as 3D point flow).
     </h2>
 </div>
 </section>
@@ -81,14 +98,8 @@
 <h2 class="title is-3 has-text-centered">Abstract</h2>
 <div class="content has-text-justified">
 <p>
-            Humans anticipate, from a glance and a contemplated action of their bodies, how the 3D world will respond, a capability that is equally vital for robotic manipulation.
-            We introduce <em>PointWorld</em>, a large pre-trained 3D world model that unifies state and action in a shared 3D space as 3D point flows: given one or few RGB-D images and a sequence of low-level robot action commands, PointWorld forecasts per-pixel displacements in 3D that respond to the given actions.
-            By representing actions as 3D point flows instead of embodiment-specific action spaces (e.g., joint positions), this formulation directly conditions on physical geometries of robots while seamlessly integrating learning across embodiments.
-            To train our 3D world model, we curate a large-scale dataset spanning real and simulated robotic manipulation in open-world environments, enabled by recent advances in 3D vision and simulated environments, totaling about 2M trajectories and 500 hours across a single-arm Franka and a bimanual humanoid.
-            Through rigorous, large-scale empirical studies of backbones, action representations, learning objectives, partial observability, data mixtures, domain transfers, and scaling, we distill design principles for large-scale 3D world modeling.
-            With a real-time (0.1s) inference speed, PointWorld can be efficiently integrated in the model-predictive control (MPC) framework for manipulation.
-            We demonstrate that a single pre-trained checkpoint enables a real-world Franka robot to perform rigid-body pushing, deformable and articulated object manipulation, and tool use, without requiring any demonstrations or post-training and all from a single image captured in-the-wild. 
-          </p>
+  Humans anticipate, from a glance and a contemplated action of their bodies, how the 3D world will respond, a capability that is equally vital for robotic manipulation. We introduce PointWorld, a large pre-trained 3D world model that unifies state and action in a shared 3D space as 3D point flows: given one or few RGB-D images and a sequence of low-level robot action commands, PointWorld forecasts per-pixel displacements in 3D that respond to the given actions. By representing actions as 3D point flows instead of embodiment-specific action spaces (e.g., joint positions), this formulation directly conditions on physical geometries of robots while seamlessly integrating learning across embodiments. To train our 3D world model, we curate a large-scale dataset spanning real and simulated robotic manipulation in open-world environments, enabled by recent advances in 3D vision and simulated environments, totaling about 2M trajectories and 500 hours across a single-arm Franka and a bimanual humanoid. Through rigorous, large-scale empirical studies of backbones, action representations, learning objectives, partial observability, data mixtures, domain transfers, and scaling, we distill design principles for large-scale 3D world modeling. With a real-time (0.1s) inference speed, PointWorld can be efficiently integrated in the model-predictive control (MPC) framework for manipulation. We demonstrate that a single pre-trained checkpoint enables a real-world Franka robot to perform rigid-body pushing, deformable and articulated object manipulation, and tool use, without requiring any demonstrations or post-training and all from a single image captured in-the-wild.
+  </p>
 </div>
 </div>
 </div>
@@ -99,10 +110,15 @@
 <h2 class="title is-3 has-text-centered">Walkthrough Video</h2>
 <div class="columns is-centered">
 <div class="column is-full has-text-centered">
-<video controls="" preload="metadata" width="100%">
-<source src="media/walkthrough-video.mp4" type="video/mp4"/>
-Your browser does not support the video tag.
-</video>
+<iframe
+  src="https://www.youtube-nocookie.com/embed/fkaGkQ8d5Kg"
+  title="PointWorld walkthrough video (YouTube)"
+  style="width: 100%; aspect-ratio: 16 / 9; border: 0;"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+  referrerpolicy="strict-origin-when-cross-origin"
+  allowfullscreen=""
+  loading="lazy"
+></iframe>
 </div>
 </div>
 </div>
@@ -373,7 +389,7 @@ Your browser does not support the video tag.
 <div class="container is-max-widescreen">
 <h2 class="title is-3 has-text-centered">Real-World Experiments</h2>
 <p class="content has-text-justified">
-      Integrated within a model-predictive control framework, a single pretrained PointWorld model enables diverse manipulation skills without task-specific data or training. All clips run at 2× speed.
+      Integrated within a model-predictive control framework, a single pretrained PointWorld model enables diverse manipulation skills without task-specific data or training.
     </p>
 <div class="columns is-multiline">
 <div class="column is-half">
